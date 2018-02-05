@@ -1,7 +1,7 @@
 CC        := g++
 LD        := g++
 
-MODULES   := ui fonts
+MODULES   := ui fonts epd images
 SRC_DIR   := $(addprefix src/,$(MODULES))
 BUILD_DIR := $(addprefix build/,$(MODULES))
 
@@ -9,11 +9,13 @@ SRC       := $(foreach sdir,$(SRC_DIR),$(wildcard $(sdir)/*.cpp))
 OBJ       := $(patsubst src/%.cpp,build/%.o,$(SRC))
 INCLUDES  := $(addprefix -I,$(SRC_DIR))
 
+LIBS      := -lbcm2835
+
 vpath %.cpp $(SRC_DIR)
 
 define make-goal
 $1/%.o: %.cpp
-	$(CC) $(INCLUDES) -c $$< -o $$@
+	$(CC) $(INCLUDES) $(LIBS) -c $$< -o $$@
 endef
 
 .PHONY: all checkdirs clean
@@ -21,7 +23,7 @@ endef
 all: checkdirs build/caddypi
 
 build/caddypi: $(OBJ)
-	$(LD) $^ -o $@
+	$(LD) $^ $(LIBS) -o $@
 
 
 checkdirs: $(BUILD_DIR)
