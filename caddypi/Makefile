@@ -1,7 +1,7 @@
 CC        := g++
 LD        := g++
 
-MODULES   := ui
+MODULES   := ui fonts
 SRC_DIR   := $(addprefix src/,$(MODULES))
 BUILD_DIR := $(addprefix build/,$(MODULES))
 
