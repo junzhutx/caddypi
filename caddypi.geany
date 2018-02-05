@@ -20,6 +20,8 @@ indent_mode=2
 [project]
 name=caddypi
 base_path=/home/pi/projects/caddypi/
+description=
+file_patterns=
 
 [long line marker]
 long_line_behaviour=1
@@ -30,3 +32,8 @@ current_page=-1
 
 [VTE]
 last_dir=/home/pi
+
+[build-menu]
+NF_00_LB=_Make
+NF_00_CM=make
+NF_00_WD=caddypi
