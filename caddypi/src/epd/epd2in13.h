@@ -27,13 +27,13 @@
 #ifndef EPD2IN13_H
 #define EPD2IN13_H
 
-#include "epdif.h"
+#include "epdbase.h"
 
 // Display resolution
 /* the resolution is 122x250 in fact */
 /* however, the logical resolution is 128x250 */
-#define EPD_WIDTH       128
-#define EPD_HEIGHT      250
+#define EPD_WIDTH_2IN13       128
+#define EPD_HEIGHT_2IN13      250
 
 // EPD2IN13 commands
 #define DRIVER_OUTPUT_CONTROL                       0x01
@@ -61,18 +61,14 @@
 extern const unsigned char lut_full_update[];
 extern const unsigned char lut_partial_update[];
 
-class Epd : public EpdIf {
+class Epd2in13 : public EpdBase {
 public:
     int width;
     int height;
 
-    Epd();
-    ~Epd();
-    int  Init(const unsigned char* lut);
-    void SendCommand(unsigned char command);
-    void SendData(unsigned char data);
-    void WaitUntilIdle(void);
-    void Reset(void);
+    Epd2in13();
+    virtual ~Epd2in13();
+    int  Init(bool partialUpdate);
     void SetFrameMemory(
         const unsigned char* image_buffer,
         int x,
@@ -82,13 +78,9 @@ public:
     );
     void ClearFrameMemory(unsigned char color);
     void DisplayFrame(void);
-    void Sleep(void);
-
+    void Sleep();
+    
 private:
-    unsigned int reset_pin;
-    unsigned int dc_pin;
-    unsigned int cs_pin;
-    unsigned int busy_pin;
     const unsigned char* lut;
 
     void SetLut(const unsigned char* lut);

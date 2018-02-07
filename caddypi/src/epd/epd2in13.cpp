@@ -27,25 +27,27 @@
 #include <stdlib.h>
 #include "epd2in13.h"
 
-Epd::~Epd() {
+Epd2in13::~Epd2in13() {
 };
 
-Epd::Epd() {
-    reset_pin = RST_PIN;
-    dc_pin = DC_PIN;
-    cs_pin = CS_PIN;
-    busy_pin = BUSY_PIN;
-    width = EPD_WIDTH;
-    height = EPD_HEIGHT;
+Epd2in13::Epd2in13() {
+    width = EPD_WIDTH_2IN13;
+    height = EPD_HEIGHT_2IN13;
 };
 
-int Epd::Init(const unsigned char* lut) {
+int Epd2in13::Init(bool partialUpdate) {
     /* this calls the peripheral hardware interface, see epdif */
     if (IfInit() != 0) {
         return -1;
     }
+    
+    if (partialUpdate) {
+        this->lut = lut_partial_update;
+    } else {
+        this->lut = lut_full_update;
+    }
+    
     /* EPD hardware init start */
-    this->lut = lut;
     Reset();
     SendCommand(DRIVER_OUTPUT_CONTROL);
     SendData((EPD_HEIGHT - 1) & 0xFF);
@@ -69,46 +71,9 @@ int Epd::Init(const unsigned char* lut) {
 }
 
 /**
- *  @brief: basic function for sending commands
- */
-void Epd::SendCommand(unsigned char command) {
-    DigitalWrite(dc_pin, LOW);
-    SpiTransfer(command);
-}
-
-/**
- *  @brief: basic function for sending data
- */
-void Epd::SendData(unsigned char data) {
-    DigitalWrite(dc_pin, HIGH);
-    SpiTransfer(data);
-}
-
-/**
- *  @brief: Wait until the busy_pin goes LOW
- */
-void Epd::WaitUntilIdle(void) {
-    while(DigitalRead(busy_pin) == HIGH) {      //LOW: idle, HIGH: busy
-        DelayMs(100);
-    }      
-}
-
-/**
- *  @brief: module reset.
- *          often used to awaken the module in deep sleep,
- *          see Epd::Sleep();
- */
-void Epd::Reset(void) {
-    DigitalWrite(reset_pin, LOW);                //module reset    
-    DelayMs(200);
-    DigitalWrite(reset_pin, HIGH);
-    DelayMs(200);    
-}
-
-/**
  *  @brief: set the look-up table register
  */
-void Epd::SetLut(const unsigned char* lut) {
+void Epd2in13::SetLut(const unsigned char* lut) {
     this->lut = lut;
     SendCommand(WRITE_LUT_REGISTER);
     /* the length of look-up table is 30 bytes */
@@ -121,7 +86,7 @@ void Epd::SetLut(const unsigned char* lut) {
  *  @brief: put an image buffer to the frame memory.
  *          this won't update the display.
  */
-void Epd::SetFrameMemory(
+void Epd2in13::SetFrameMemory(
     const unsigned char* image_buffer,
     int x,
     int y,
@@ -166,7 +131,7 @@ void Epd::SetFrameMemory(
  *  @brief: clear the frame memory with the specified color.
  *          this won't update the display.
  */
-void Epd::ClearFrameMemory(unsigned char color) {
+void Epd2in13::ClearFrameMemory(unsigned char color) {
     SetMemoryArea(0, 0, this->width - 1, this->height - 1);
     /* set the frame memory line by line */
     for (int j = 0; j < this->height; j++) {
@@ -185,7 +150,7 @@ void Epd::ClearFrameMemory(unsigned char color) {
  *          the the next action of SetFrameMemory or ClearFrame will 
  *          set the other memory area.
  */
-void Epd::DisplayFrame(void) {
+void Epd2in13::DisplayFrame(void) {
     SendCommand(DISPLAY_UPDATE_CONTROL_2);
     SendData(0xC4);
     SendCommand(MASTER_ACTIVATION);
@@ -196,7 +161,7 @@ void Epd::DisplayFrame(void) {
 /**
  *  @brief: private function to specify the memory area for data R/W
  */
-void Epd::SetMemoryArea(int x_start, int y_start, int x_end, int y_end) {
+void Epd2in13::SetMemoryArea(int x_start, int y_start, int x_end, int y_end) {
     SendCommand(SET_RAM_X_ADDRESS_START_END_POSITION);
     /* x point must be the multiple of 8 or the last 3 bits will be ignored */
     SendData((x_start >> 3) & 0xFF);
@@ -211,7 +176,7 @@ void Epd::SetMemoryArea(int x_start, int y_start, int x_end, int y_end) {
 /**
  *  @brief: private function to specify the start point for data R/W
  */
-void Epd::SetMemoryPointer(int x, int y) {
+void Epd2in13::SetMemoryPointer(int x, int y) {
     SendCommand(SET_RAM_X_ADDRESS_COUNTER);
     /* x point must be the multiple of 8 or the last 3 bits will be ignored */
     SendData((x >> 3) & 0xFF);
@@ -222,12 +187,12 @@ void Epd::SetMemoryPointer(int x, int y) {
 }
 
 /**
- *  @brief: After this command is transmitted, the chip would enter the 
- *          deep-sleep mode to save power. 
- *          The deep sleep mode would return to standby by hardware reset. 
+ *  @brief: After this command is transmitted, the chip would enter the
+ *          deep-sleep mode to save power.
+ *          The deep sleep mode would return to standby by hardware reset.
  *          You can use Epd::Init() to awaken
  */
-void Epd::Sleep() {
+void Epd2in13::Sleep() {
     SendCommand(DEEP_SLEEP_MODE);
     WaitUntilIdle();
 }
