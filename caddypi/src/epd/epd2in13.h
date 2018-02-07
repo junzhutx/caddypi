@@ -77,6 +77,7 @@ public:
     void ClearFrameMemory(unsigned char color);
     void DisplayFrame(void);
     void Sleep();
+    int waitUntilValue();
     
 private:
     const unsigned char* lut;

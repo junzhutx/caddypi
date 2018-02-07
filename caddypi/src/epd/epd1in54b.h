@@ -83,6 +83,7 @@ public:
     int Init(bool partialUpdate);
     void DisplayFrame(const unsigned char* frame_buffer_black, const unsigned char* frame_buffer_red);
     void Sleep();
+    int waitUntilValue();
     
 private:
     void SetLutBw(void);

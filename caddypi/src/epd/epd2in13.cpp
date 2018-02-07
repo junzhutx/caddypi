@@ -88,6 +88,13 @@ int Epd2in13::Init(bool partialUpdate) {
 }
 
 /**
+ * @brief: Wait until HIGH or LOW
+ */
+int Epd2in13::waitUntilValue() {
+    return HIGH;
+}
+
+/**
  *  @brief: set the look-up table register
  */
 void Epd2in13::SetLut(const unsigned char* lut) {

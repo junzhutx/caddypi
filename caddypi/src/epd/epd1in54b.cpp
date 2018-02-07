@@ -76,6 +76,13 @@ int Epd1in54b::Init(bool /* partialUpdate */) {
 }
 
 /**
+ * @brief: Wait until HIGH or LOW
+ */
+int Epd1in54b::waitUntilValue() {
+    return LOW;
+}
+
+/**
  *  @brief: private function to set the look-up tables
  */
 void Epd1in54b::SetLutBw(void) {

@@ -16,6 +16,7 @@ public:
     void WaitUntilIdle(void);
     void Reset(void);
     virtual void Sleep() = 0;
+    virtual int waitUntilValue() = 0;
     
 protected:
     unsigned int reset_pin;
