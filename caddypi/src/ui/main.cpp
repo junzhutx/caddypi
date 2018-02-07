@@ -124,8 +124,7 @@ int main(void)
         printf("e-Paper init failed\n");
         return -1;
     }
-printf("width is %d", epd.width);
-printf("height is %d", epd.height);
+    
     unsigned char* frame_black = (unsigned char*)malloc(epd.width * epd.height / 8);
     unsigned char* frame_red = (unsigned char*)malloc(epd.width * epd.height / 8);
 
