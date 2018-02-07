@@ -24,6 +24,7 @@
  * THE SOFTWARE.
  */
 
+#if 0
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -39,8 +40,8 @@ int main(void)
     time_t now;
     struct tm* timenow;
 
-    Epd epd;
-    if (epd.Init(lut_full_update) != 0) {
+    Epd2in13 epd;
+    if (epd.Init(true) != 0) {
         printf("e-Paper init failed\n");
         return -1;
     }
@@ -69,7 +70,7 @@ int main(void)
     epd.DisplayFrame();
     epd.DelayMs(2000);
 
-    if (epd.Init(lut_partial_update) != 0) {
+    if (epd.Init(false) != 0) {
         printf("e-Paper init failed\n");
         return -1;
     }
@@ -106,4 +107,53 @@ int main(void)
     }
     return 0;
 }
+#else
+#include <stdlib.h>
+#include <stdio.h>
+#include "epd1in54b.h"
+#include "imagedata_1in54b.h"
+#include "epdpaint.h"
 
+#define COLORED      1
+#define UNCOLORED    0
+
+int main(void)
+{
+    Epd1in54b epd;
+    if (epd.Init(false) != 0) {
+        printf("e-Paper init failed\n");
+        return -1;
+    }
+printf("width is %d", epd.width);
+printf("height is %d", epd.height);
+    unsigned char* frame_black = (unsigned char*)malloc(epd.width * epd.height / 8);
+    unsigned char* frame_red = (unsigned char*)malloc(epd.width * epd.height / 8);
+
+    Paint paint_black(frame_black, epd.width, epd.height);
+    Paint paint_red(frame_red, epd.width, epd.height);
+    paint_black.Clear(UNCOLORED);
+    paint_red.Clear(UNCOLORED);
+
+    /* Draw something to the frame buffer */
+    /* For simplicity, the arguments are explicit numerical coordinates */
+    paint_black.DrawRectangle(10, 60, 50, 110, COLORED);
+    paint_black.DrawLine(10, 60, 50, 110, COLORED);
+    paint_black.DrawLine(50, 60, 10, 110, COLORED);
+    paint_black.DrawCircle(120, 80, 30, COLORED);
+    paint_red.DrawFilledRectangle(10, 130, 50, 180, COLORED);
+    paint_red.DrawFilledRectangle(0, 6, 200, 26, COLORED);
+    paint_red.DrawFilledCircle(120, 150, 30, COLORED);
+
+    /*Write strings to the buffer */
+    paint_black.DrawStringAt(30, 30, "e-Paper Demo", &Font16, COLORED);
+    paint_red.DrawStringAt(28, 10, "Hello world!", &Font16, UNCOLORED);
+   
+    /* Display the frame buffer */
+    epd.DisplayFrame(frame_black, frame_red);
+
+    /* Display the image buffer */
+    epd.DisplayFrame(IMAGE_BLACK, IMAGE_RED);
+    return 0;
+}
+
+#endif

@@ -10,12 +10,13 @@ OBJ       := $(patsubst src/%.cpp,build/%.o,$(SRC))
 INCLUDES  := $(addprefix -I,$(SRC_DIR))
 
 LIBS      := -lbcm2835
+CFLAGS    := -Wall -std=c++14
 
 vpath %.cpp $(SRC_DIR)
 
 define make-goal
 $1/%.o: %.cpp
-	$(CC) $(INCLUDES) $(LIBS) -c $$< -o $$@
+	$(CC) $(CFLAGS) $(INCLUDES) $(LIBS) -c $$< -o $$@
 endef
 
 .PHONY: all checkdirs clean

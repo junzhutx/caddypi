@@ -22,6 +22,6 @@ protected:
     unsigned int dc_pin;
     unsigned int cs_pin;
     unsigned int busy_pin;
-}
+};
 
 #endif /* EPDBASE_H */

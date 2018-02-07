@@ -78,7 +78,7 @@ int Epd1in54b::Init(bool /* partialUpdate */) {
 /**
  *  @brief: private function to set the look-up tables
  */
-void Epd::SetLutBw(void) {
+void Epd1in54b::SetLutBw(void) {
     unsigned int count;     
     SendCommand(0x20);         //g vcom
     for(count = 0; count < 15; count++) {

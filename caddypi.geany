@@ -28,7 +28,8 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=-1
+current_page=0
+FILE_NAME_0=0;C++;0;EUTF-8;1;1;0;%2Fhome%2Fpi%2Fprojects%2Fcaddypi%2Fsrc%2Fui%2Fmain.cpp;0;4
 
 [VTE]
 last_dir=/home/pi
@@ -36,4 +37,12 @@ last_dir=/home/pi
 [build-menu]
 NF_00_LB=_Make
 NF_00_CM=make
-NF_00_WD=caddypi
+NF_00_WD=
+
+[prjorg]
+source_patterns=*.c;*.C;*.cpp;*.cxx;*.c++;*.cc;*.m;
+header_patterns=*.h;*.H;*.hpp;*.hxx;*.h++;*.hh;
+ignored_dirs_patterns=.*;CVS;
+ignored_file_patterns=*.o;*.obj;*.a;*.lib;*.so;*.dll;*.lo;*.la;*.class;*.jar;*.pyc;*.mo;*.gmo;
+generate_tag_prefs=0
+external_dirs=

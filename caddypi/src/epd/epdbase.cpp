@@ -4,7 +4,7 @@
 EpdBase::~EpdBase() {
 }
 
-EpsBase::EpdBase() {
+EpdBase::EpdBase() {
     reset_pin = RST_PIN;
     dc_pin = DC_PIN;
     cs_pin = CS_PIN;
@@ -14,7 +14,7 @@ EpsBase::EpdBase() {
 /**
  *  @brief: basic function for sending commands
  */
-void EpsBase::SendCommand(unsigned char command) {
+void EpdBase::SendCommand(unsigned char command) {
     DigitalWrite(dc_pin, LOW);
     SpiTransfer(command);
 }
@@ -22,7 +22,7 @@ void EpsBase::SendCommand(unsigned char command) {
 /**
  *  @brief: basic function for sending data
  */
-void EpsBase::SendData(unsigned char data) {
+void EpdBase::SendData(unsigned char data) {
     DigitalWrite(dc_pin, HIGH);
     SpiTransfer(data);
 }
@@ -30,7 +30,7 @@ void EpsBase::SendData(unsigned char data) {
 /**
  *  @brief: Wait until the busy_pin goes LOW
  */
-void EpsBase::WaitUntilIdle(void) {
+void EpdBase::WaitUntilIdle(void) {
     while(DigitalRead(busy_pin) == HIGH) {      //LOW: idle, HIGH: busy
         DelayMs(100);
     }
@@ -41,7 +41,7 @@ void EpsBase::WaitUntilIdle(void) {
  *          often used to awaken the module in deep sleep,
  *          see Epd::Sleep();
  */
-void EpsBase::Reset(void) {
+void EpdBase::Reset(void) {
     DigitalWrite(reset_pin, LOW);                //module reset
     DelayMs(200);
     DigitalWrite(reset_pin, HIGH);
