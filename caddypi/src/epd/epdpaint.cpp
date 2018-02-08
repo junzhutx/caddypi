@@ -28,6 +28,7 @@
 
 Paint::Paint(unsigned char* image, int width, int height) {
     this->rotate = ROTATE_0;
+    this->invertColor = false;
     this->image = image;
     /* 1 byte = 8 pixels, so the width should be the multiple of 8 */
     this->width = width % 8 ? width + 8 - (width % 8) : width;
@@ -56,7 +57,7 @@ void Paint::DrawAbsolutePixel(int x, int y, int colored) {
     if (x < 0 || x >= this->width || y < 0 || y >= this->height) {
         return;
     }
-    if (IF_INVERT_COLOR) {
+    if (this->invertColor) {
         if (colored) {
             image[(x + y * this->width) / 8] |= 0x80 >> (x % 8);
         } else {
@@ -100,6 +101,14 @@ int Paint::GetRotate(void) {
 
 void Paint::SetRotate(int rotate){
     this->rotate = rotate;
+}
+
+void Paint::SetInvertColor(bool isInvertColor) {
+    this->invertColor = isInvertColor;
+}
+
+bool Paint::GetInvertColor(void) {
+    return this->invertColor;
 }
 
 /**

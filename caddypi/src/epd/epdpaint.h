@@ -33,9 +33,6 @@
 #define ROTATE_180          2
 #define ROTATE_270          3
 
-// Color inverse. 1 or 0 = set or reset a bit if set a colored pixel
-#define IF_INVERT_COLOR     0
-
 #include "fonts.h"
 
 class Paint {
@@ -50,6 +47,8 @@ public:
     int  GetRotate(void);
     void SetRotate(int rotate);
     unsigned char* GetImage(void);
+    void SetInvertColor(bool isInvertColor);
+    bool GetInvertColor(void);
     void DrawAbsolutePixel(int x, int y, int colored);
     void DrawPixel(int x, int y, int colored);
     void DrawCharAt(int x, int y, char ascii_char, sFONT* font, int colored);
@@ -67,6 +66,7 @@ private:
     int width;
     int height;
     int rotate;
+    bool invertColor;
 };
 
 #endif

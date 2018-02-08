@@ -49,6 +49,7 @@ int main(void)
     unsigned char* frame_buffer = (unsigned char*)malloc(epd.width / 8 * epd.height);
 
     Paint paint(frame_buffer, epd.width, epd.height);
+    paint.SetInvertColor(true);
     paint.Clear(UNCOLORED);
 
     /* For simplicity, the arguments are explicit numerical coordinates */
