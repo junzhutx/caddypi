@@ -24,7 +24,7 @@
  * THE SOFTWARE.
  */
 
-#if 0
+#if 1
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -41,7 +41,7 @@ int main(void)
     struct tm* timenow;
 
     Epd2in13 epd;
-    if (epd.Init(true) != 0) {
+    if (epd.Init(false) != 0) {
         printf("e-Paper init failed\n");
         return -1;
     }
@@ -71,7 +71,7 @@ int main(void)
     epd.DisplayFrame();
     epd.DelayMs(2000);
 
-    if (epd.Init(false) != 0) {
+    if (epd.Init(true) != 0) {
         printf("e-Paper init failed\n");
         return -1;
     }
