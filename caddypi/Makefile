@@ -9,7 +9,7 @@ SRC       := $(foreach sdir,$(SRC_DIR),$(wildcard $(sdir)/*.cpp))
 OBJ       := $(patsubst src/%.cpp,build/%.o,$(SRC))
 INCLUDES  := $(addprefix -I,$(SRC_DIR))
 
-LIBS      := -lbcm2835
+LIBS      := -lwiringPi
 CFLAGS    := -Wall -std=c++14
 
 vpath %.cpp $(SRC_DIR)
