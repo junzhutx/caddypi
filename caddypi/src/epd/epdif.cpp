@@ -51,13 +51,15 @@ void EpdIf::SpiTransfer(unsigned char data) {
 }
 
 int EpdIf::IfInit(void) {
-    if(wiringPiSetupGpio() < 0) {    // using Broadcom GPIO pin mapping
-        return -1;
-    }
+    // wiringPi is setup from main entry of application
+//    if(wiringPiSetupGpio() < 0) {    // using Broadcom GPIO pin mapping
+//        return -1;
+//    }
     pinMode(RST_PIN, OUTPUT);
     pinMode(DC_PIN, OUTPUT);
-    pinMode(BUSY_PIN, INPUT); 
-    wiringPiSPISetup(0, 2000000);
+    pinMode(BUSY_PIN, INPUT);
+    // same as setup, done at the application startup
+//    wiringPiSPISetup(0, 2000000);
     return 0;
 }
 

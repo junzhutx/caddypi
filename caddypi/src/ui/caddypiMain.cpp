@@ -1,13 +1,24 @@
 #include <core.h>
-
-void F1()
-{
-    std::cout << __FUNCTION__ << std::endl;
-}
+#include <wiringPi.h>
 
 int main( int argc, char * argv[] )
 {
-    boost::bind( &F1 )();
+    // initialize wiringPi
+    if(wiringPiSetupGpio() < 0) {    // using Broadcom GPIO pin mapping
+        return -1;
+    }
+    // setup SPI channel 0
+    wiringPiSPISetup(0, 2000000);
+
+    boost::shared_ptr< boost::asio::io_service > io_service(
+        new boost::asio::io_service
+    );
+    boost::shared_ptr< boost::asio::io_service::work > work(
+        new boost::asio::io_service::work( *io_service )
+    );
+
+    io_service->run();
+    
     return 0;
 }
 
