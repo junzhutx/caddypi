@@ -1,5 +1,6 @@
 #include <core.h>
 #include <wiringPi.h>
+#include <wiringPiSPI.h>
 
 int main( int argc, char * argv[] )
 {
